@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: weblate
+      POSTGRES_USER: weblate
+      POSTGRES_DB: weblate
+  cache:
+    image: redis
+    ports:
+      - 6379:6379
+  weblate:
+    image: weblate/weblate
+    depends_on:
+      - postgres
+      - cache
+    ports:
+      - 80:8080
+    environment:
+      WEBLATE_EMAIL_HOST: smtp.example.com
+      WEBLATE_EMAIL_HOST_USER: user
+      WEBLATE_EMAIL_HOST_PASSWORD: pass
+      WEBLATE_SERVER_EMAIL: weblate@example.com
+      WEBLATE_DEFAULT_FROM_EMAIL: weblate@example.com
+      WEBLATE_SITE_DOMAIN: weblate.example.com
+      WEBLATE_ADMIN_PASSWORD: qwerty
+      WEBLATE_ADMIN_EMAIL: burtsevde@gmail.com
+      POSTGRES_DATABASE: weblate
+      POSTGRES_USER: weblate
+      POSTGRES_PASSWORD: weblate
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      REDIS_DB: 0
